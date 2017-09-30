@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/status_layout"
+        android:visibility="gone" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="50.0dip">
+
+            <lecho.lib.hellocharts.view.LineChartView
+                android:id="@+id/lineChartView"
+                android:layout_width="500.0dip"
+                android:layout_height="400.0dip"
+                android:layout_marginTop="20.0dip" />
+
+            <lecho.lib.hellocharts.view.ColumnChartView
+                android:id="@+id/columnChartView"
+                android:layout_width="500.0dip"
+                android:layout_height="400.0dip"
+                android:layout_below="@+id/lineChartView"
+                android:layout_marginTop="50.0dip" />
+
+            <lecho.lib.hellocharts.view.PieChartView
+                android:id="@+id/pieChartView"
+                android:layout_width="500.0dip"
+                android:layout_height="400.0dip"
+                android:layout_below="@+id/columnChartView"
+                android:layout_marginBottom="70.0dip"
+                android:layout_marginTop="50.0dip" />
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
+</FrameLayout>

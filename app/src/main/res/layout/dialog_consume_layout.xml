@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="140.0dip"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/consumeEt"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15.0dip"
+        android:gravity="center"
+        android:hint="类型..."
+        android:maxLength="10"
+        android:maxLines="1"
+        android:textColor="@color/colorPrimaryText"
+        android:textColorHint="@color/colorSecondText" />
+
+    <Button
+        android:id="@+id/selectedBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="20.0dip"
+        android:layout_marginRight="20.0dip"
+        android:background="@null"
+        android:text="确定"
+        android:textColor="@color/colorPrimary" />
+
+    <Button
+        android:id="@+id/cancelBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20.0dip"
+        android:layout_toLeftOf="@id/selectedBtn"
+        android:background="@null"
+        android:text="取消"
+        android:textColor="@color/colorPrimary" />
+</RelativeLayout>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorAccent">#ffffeb3b</color>
+    <color name="colorDvider">#ffbdbdbd</color>
+    <color name="colorPrimary">#ffffc107</color>
+    <color name="colorPrimaryDark">#ffffc107</color>
+    <color name="colorPrimaryText">#ff212121</color>
+    <color name="colorRed">#ffd95656</color>
+    <color name="colorSecondText">#ff757575</color>
+    <color name="colorTransparent">#00ffffff</color>
+    <color name="colorWhite">#ffffffff</color>
+    <color name="tabTextColor">#90efefef</color>
+</resources>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="125.0dip"
+    android:layout_marginLeft="10.0dip"
+    android:layout_marginRight="10.0dip"
+    android:layout_marginTop="20.0dip">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <TextView
+            android:id="@+id/timeTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15.0dip"
+            android:layout_marginTop="10.0dip"
+            android:text="2017-9-17"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="17.0dip" />
+
+        <TextView
+            android:id="@+id/categoryTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20.0dip"
+            android:layout_marginTop="10.0dip"
+            android:layout_toRightOf="@+id/timeTv"
+            android:text="支出"
+            android:textSize="15.0dip" />
+
+        <ImageView
+            android:id="@+id/paymentImg"
+            android:layout_width="40.0dip"
+            android:layout_height="40.0dip"
+            android:layout_below="@+id/timeTv"
+            android:layout_marginLeft="15.0dip"
+            android:layout_marginTop="20.0dip"
+            android:background="@drawable/canyin_x48" />
+
+        <TextView
+            android:id="@+id/paymentTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/timeTv"
+            android:layout_marginLeft="20.0dip"
+            android:layout_marginTop="27.0dip"
+            android:layout_toRightOf="@+id/paymentImg"
+            android:text="投资"
+            android:textSize="17.0dip" />
+
+        <TextView
+            android:id="@+id/totalTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20.0dip"
+            android:text="￥200"
+            android:textSize="20.0dip" />
+
+        <TextView
+            android:id="@+id/deleteBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10.0dip"
+            android:layout_marginRight="25.0dip"
+            android:layout_toRightOf="@+id/updateBtn"
+            android:text="删除"
+            android:textColor="@color/colorPrimary"
+            android:textSize="17.0dip" />
+
+        <TextView
+            android:id="@+id/updateBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10.0dip"
+            android:layout_marginRight="20.0dip"
+            android:text="更新"
+            android:textColor="@color/colorPrimary"
+            android:textSize="17.0dip" />
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

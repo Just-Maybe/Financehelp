@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="110.0dip">
+
+    <View
+        android:layout_width="3.0px"
+        android:layout_height="fill_parent"
+        android:layout_centerHorizontal="true"
+        android:background="@color/colorAccent" />
+
+    <TextView
+        android:id="@+id/budgetTv"
+        android:layout_width="90.0dip"
+        android:layout_height="90.0dip"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15.0dip"
+        android:background="@drawable/month_budget_bg"
+        android:gravity="center"
+        android:text="月份预算"
+        android:textColor="@color/colorWhite" />
+
+    <TextView
+        android:id="@+id/monthlyIncomeTv"
+        android:layout_width="70.0dip"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/budgetTv"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/budgetTv"
+        android:layout_marginLeft="30.0dip"
+        android:gravity="center"
+        android:text="9月份收入 ￥ 2400.00"
+        android:textColor="@color/colorSecondText" />
+
+    <TextView
+        android:id="@+id/monthlyOutcomeTv"
+        android:layout_width="70.0dip"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/budgetTv"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/budgetTv"
+        android:layout_marginRight="30.0dip"
+        android:gravity="center"
+        android:text="9月份收入 ￥ 2400.00"
+        android:textColor="@color/colorSecondText" />
+</RelativeLayout>

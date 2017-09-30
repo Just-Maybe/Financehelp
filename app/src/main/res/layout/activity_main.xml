@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="?actionBarSize">
+
+                <ImageView
+                    android:id="@+id/tableBtn"
+                    android:layout_width="32.0dip"
+                    android:layout_height="32.0dip"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/table_x48"
+                    android:clickable="true" />
+
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/tabLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="?actionBarSize"
+                    android:layout_centerHorizontal="true"
+                    app:tabGravity="fill"
+                    app:tabIndicatorColor="@color/colorTransparent"
+                    app:tabMode="fixed"
+                    app:tabSelectedTextColor="@color/colorWhite"
+                    app:tabTextColor="@color/tabTextColor"
+                    app:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
+
+                <ImageView
+                    android:layout_width="32.0dip"
+                    android:layout_height="32.0dip"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5.0dip"
+                    android:background="@drawable/search_x48"
+                    android:clickable="true" />
+            </RelativeLayout>
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="?actionBarSize" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/addAccountBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16.0dip"
+        android:clickable="true"
+        android:src="@drawable/add_x48"
+        app:fabSize="normal"
+        app:layout_anchor="@+id/viewPager"
+        app:layout_anchorGravity="bottom|center|right"
+        app:rippleColor="@color/colorPrimary" />
+</android.support.design.widget.CoordinatorLayout>

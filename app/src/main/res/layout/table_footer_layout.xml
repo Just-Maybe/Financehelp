@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="50.0dip"
+    android:layout_marginTop="20.0dip">
+
+    <TextView
+        android:id="@+id/footerTv"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:text="你已经记录生活第21天..."
+        android:textSize="15.0dip" />
+</RelativeLayout>

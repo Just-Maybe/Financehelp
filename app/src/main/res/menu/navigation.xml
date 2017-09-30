@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/income_menu"
+        android:icon="@drawable/income_x32"
+        android:title="收入"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/outcome_menu"
+        android:icon="@drawable/outcome_x32"
+        android:title="支出"
+        app:showAsAction="ifRoom" />
+</menu>
