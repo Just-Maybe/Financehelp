@@ -6,21 +6,19 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.miracle.financehelp.AppConstant;
 import com.example.miracle.financehelp.R;
 import com.example.miracle.financehelp.entity.User;
 import com.example.miracle.financehelp.utils.SPUtils;
-import com.example.miracle.financehelp.utils.SizeUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
@@ -57,10 +55,10 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void done(List<User> list, BmobException e) {
                 if (list.size() > 0) {
-                    SPUtils.putString("objectId", list.get(0).getObjectId());
-                    SPUtils.putString("nickName", list.get(0).getNickName());
-                    SPUtils.putString("headImgUrl", list.get(0).getHeadImgUrl());
-                    SPUtils.putBoolean("isLogin", true);
+                    SPUtils.putString(AppConstant.OBJECTID, list.get(0).getObjectId());
+                    SPUtils.putString(AppConstant.NICKNAME, list.get(0).getNickName());
+                    SPUtils.putString(AppConstant.HEADIMGURL, list.get(0).getHeadImgUrl());
+                    SPUtils.putBoolean(AppConstant.ISLOAD, true);
                     if (!TextUtils.isEmpty(list.get(0).getDatabaseUrl())) {
 
                         if (getApplicationContext().getDatabasePath("test.db").exists()) {
@@ -95,42 +93,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-//        localBmobQuery.findObjects(new FindListener() {
-//            public void done(List<User> paramAnonymousList, final BmobException paramAnonymousBmobException) {
-//                Log.d("111", "done: " + paramAnonymousList.size());
-//                if (paramAnonymousList.size() > 0) {
-//                    SPUtils.putString("objectId", (paramAnonymousList.get(0)).getObjectId());
-//                    SPUtils.putString("nickName", (paramAnonymousList.get(0)).getNickName());
-//                    SPUtils.putString("headImgUrl", (paramAnonymousList.get(0)).getHeadImgUrl());
-//                    SPUtils.putBoolean("isLogin", true);
-//                    if (LoginActivity.this.getApplicationContext().getDatabasePath("test.db").exists()) {
-//                        paramAnonymousList = new BmobFile("test_backup.db", "", ((User) paramAnonymousList.get(0)).getDatabaseUrl());
-//                        paramAnonymousBmobException = new File(LoginActivity.this.getApplicationContext().getDatabasePath("test.db").getParent(), "test_backup.db");
-//                        paramAnonymousList.download(paramAnonymousBmobException, new DownloadFileListener() {
-//                            public void done(String paramAnonymous2String, BmobException paramAnonymous2BmobException) {
-//                                try {
-//                                    LoginActivity.this.fileCopy(paramAnonymousBmobException, LoginActivity.this.getApplicationContext().getDatabasePath("test.db"));
-//                                    Log.d("111", "done: " + paramAnonymous2String);
-//                                    return;
-//                                } catch (IOException paramAnonymous2BmobException) {
-//                                    for (; ; ) {
-//                                        paramAnonymous2BmobException.printStackTrace();
-//                                    }
-//                                }
-//                            }
-//
-//                            public void onProgress(Integer paramAnonymous2Integer, long paramAnonymous2Long) {
-//                            }
-//                        });
-//                    }
-//                    paramAnonymousList = new Intent(LoginActivity.this, MainActivity.class);
-//                    LoginActivity.this.startActivity(paramAnonymousList);
-//                    LoginActivity.this.finish();
-//                    return;
-//                }
-//                Snackbar.make(LoginActivity.this.content, "账号或密码错误", Snackbar.LENGTH_SHORT).show();
-//            }
-//        });
     }
 
     private void fileCopy(File dbFile, File backup) throws IOException {

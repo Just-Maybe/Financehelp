@@ -1,12 +1,15 @@
 package com.example.miracle.financehelp.fragment;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,10 +19,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.miracle.financehelp.App;
+import com.example.miracle.financehelp.AppConstant;
 import com.example.miracle.financehelp.R;
 import com.example.miracle.financehelp.activity.LoginActivity;
 import com.example.miracle.financehelp.activity.UpdateNickNameActivity;
 import com.example.miracle.financehelp.activity.UpdatePasswordActivity;
+import com.example.miracle.financehelp.entity.AccountDao;
+import com.example.miracle.financehelp.entity.IncomeTypeDao;
+import com.example.miracle.financehelp.entity.OutcomeTypeDao;
 import com.example.miracle.financehelp.entity.User;
 import com.example.miracle.financehelp.utils.NetworkUtils;
 import com.example.miracle.financehelp.utils.SPUtils;
@@ -64,8 +72,16 @@ public class MineFragment extends Fragment {
     RelativeLayout exitLayout;
     private Uri imageUri;
     private ProgressDialog progressDialog;
+    private AccountDao accountDao;
+    private IncomeTypeDao incomeTypeDao;
+    private OutcomeTypeDao outcomeTypeDao;
 
 
+    /**
+     * 上传头像
+     *
+     * @param photoPath
+     */
     private void loadFile(String photoPath) {
         this.progressDialog.setTitle("上传头像中");
         this.progressDialog.setMessage("请稍后...");
@@ -76,11 +92,11 @@ public class MineFragment extends Fragment {
                 if (list.size() == urls.size()) {
                     final User user = new User();
                     user.setHeadImgUrl(urls.get(0));
-                    user.update(SPUtils.getString("objectId"), new UpdateListener() {
+                    user.update(SPUtils.getString(AppConstant.OBJECTID), new UpdateListener() {
                         @Override
                         public void done(BmobException e) {
                             Snackbar.make(MineFragment.this.getView(), "上传成功", -1).show();
-                            SPUtils.putString("headImgUrl", urls.get(0));
+                            SPUtils.putString(AppConstant.HEADIMGURL, urls.get(0));
                             Glide.with(getActivity()).load(urls.get(0)).into(headImg);
                             progressDialog.dismiss();
                         }
@@ -111,6 +127,9 @@ public class MineFragment extends Fragment {
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setCanceledOnTouchOutside(false);
         SPUtils.getInstance(getActivity());
+        accountDao = App.getDaoSession().getAccountDao();
+        incomeTypeDao = App.getDaoSession().getIncomeTypeDao();
+        outcomeTypeDao = App.getDaoSession().getOutcomeTypeDao();
         return view;
     }
 
@@ -118,14 +137,16 @@ public class MineFragment extends Fragment {
     public void onResume() {
         super.onResume();
         SPUtils.getInstance(getContext());
-        if (SPUtils.getBoolean("isLogin")) {
-            if (!TextUtils.isEmpty(SPUtils.getString("nickName"))) {
-                loginTipsTv.setText(SPUtils.getString("nickName"));
+        if (SPUtils.getBoolean(AppConstant.ISLOAD)) {
+            exitLayout.setVisibility(View.VISIBLE);
+            if (!TextUtils.isEmpty(SPUtils.getString(AppConstant.NICKNAME))) {
+                loginTipsTv.setText(SPUtils.getString(AppConstant.NICKNAME));
             }
-            if (!TextUtils.isEmpty(SPUtils.getString("headImgUrl"))) {
-                Glide.with(getActivity()).load(SPUtils.getString("headImgUrl")).into(headImg);
+            if (!TextUtils.isEmpty(SPUtils.getString(AppConstant.HEADIMGURL))) {
+                Glide.with(getActivity()).load(SPUtils.getString(AppConstant.HEADIMGURL)).into(headImg);
             }
         } else {
+            exitLayout.setVisibility(View.GONE);
             loginTipsTv.setText("请登录");
         }
     }
@@ -135,7 +156,7 @@ public class MineFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.headLayout:
-                if (SPUtils.getBoolean("isLogin")) {
+                if (SPUtils.getBoolean(AppConstant.ISLOAD)) {
                     final HeadImgDialog dialog = new HeadImgDialog(getActivity());
                     dialog.setTitle("选择头像的方式");
                     dialog.setOnItemClickListner(new HeadImgDialog.OnCLickListener() {
@@ -144,7 +165,6 @@ public class MineFragment extends Fragment {
                                 @Override
                                 public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
                                     loadFile((resultList.get(0)).getPhotoPath());
-
                                 }
 
                                 @Override
@@ -178,7 +198,7 @@ public class MineFragment extends Fragment {
                 break;
             case R.id.updateNameLayout:
                 Intent updateNameIntent;
-                if (SPUtils.getBoolean("isLogin", false)) {
+                if (SPUtils.getBoolean(AppConstant.ISLOAD, false)) {
                     updateNameIntent = new Intent(getActivity(), UpdateNickNameActivity.class);
                 } else {
                     updateNameIntent = new Intent(getActivity(), LoginActivity.class);
@@ -187,7 +207,7 @@ public class MineFragment extends Fragment {
                 break;
             case R.id.updatePassLayout:
                 Intent updatePassIntent;
-                if (SPUtils.getBoolean("isLogin", false)) {
+                if (SPUtils.getBoolean(AppConstant.ISLOAD, false)) {
                     updatePassIntent = new Intent(getActivity(), UpdatePasswordActivity.class);
                 } else {
                     updatePassIntent = new Intent(getActivity(), LoginActivity.class);
@@ -196,8 +216,12 @@ public class MineFragment extends Fragment {
                 break;
             case R.id.backupLayout:
 
-                if (SPUtils.getBoolean("isLogin", false)) {
-                    backupDatabase();
+                if (SPUtils.getBoolean(AppConstant.ISLOAD, false)) {
+                    if (accountDao.loadAll().size() == 0) {
+                        Snackbar.make(getView(), "还没记录数据", Snackbar.LENGTH_SHORT).show();
+                    } else {
+                        backupDatabase();
+                    }
                 } else {
                     Intent backupIntent = new Intent(getActivity(), LoginActivity.class);
                     startActivity(backupIntent);
@@ -205,12 +229,48 @@ public class MineFragment extends Fragment {
 
                 break;
             case R.id.cleanLayout:
-
+                cleanUpData();
                 break;
             case R.id.exitLayout:
-
+                AlertDialog dialog = new AlertDialog.Builder(getActivity()).setTitle("确认要退出")
+                        .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                SPUtils.putBoolean(AppConstant.ISLOAD, false);
+                                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                startActivity(intent);
+                                dialogInterface.dismiss();
+                                getActivity().finish();
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        }).show();
                 break;
         }
+
+    }
+
+    private void cleanUpData() {
+        final AlertDialog dialog = new AlertDialog.Builder(getActivity()).setTitle("确认要清空数据吗")
+                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        accountDao.deleteAll();
+                        incomeTypeDao.deleteAll();
+                        outcomeTypeDao.deleteAll();
+                        dialogInterface.dismiss();
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                }).create();
+        dialog.show();
 
     }
 
@@ -226,7 +286,7 @@ public class MineFragment extends Fragment {
                 if (list.size() == urls.size()) {
                     User user = new User();
                     user.setDatabaseUrl(urls.get(0));
-                    user.update(SPUtils.getString("objectId"), new UpdateListener() {
+                    user.update(SPUtils.getString(AppConstant.OBJECTID), new UpdateListener() {
                         @Override
                         public void done(BmobException e) {
                             Snackbar.make(getView(), "备份成功", Snackbar.LENGTH_SHORT).show();

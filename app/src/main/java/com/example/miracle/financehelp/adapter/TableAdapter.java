@@ -67,7 +67,7 @@ public class TableAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if ((holder instanceof itemHolder)) {
             Date date = (mList.get(position)).getTime();
-            String dateStr = date.getYear() + "-" + date.getMonth() + 1 + "-" + date.getDate();
+            String dateStr = date.getYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
             ((itemHolder) holder).timeTv.setText(dateStr);
             int imageResource = 0;
             if ((mList.get(position)).getCategory() == 1) {
