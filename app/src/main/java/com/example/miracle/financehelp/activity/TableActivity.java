@@ -35,6 +35,8 @@ public class TableActivity extends AppCompatActivity {
     private int offset = 0;
 
     private void setupRecyclerView() {
+        offset=0;
+        limit=6;
         List localList = this.dao.queryBuilder().offset(this.offset).limit(this.limit).orderDesc(new Property[]{AccountDao.Properties.Time}).list();
         lm = new LinearLayoutManager(this);
         adapter = new TableAdapter(this, localList);
@@ -89,8 +91,14 @@ public class TableActivity extends AppCompatActivity {
         super.onCreate(paramBundle);
         setContentView(R.layout.activity_table);
         ButterKnife.bind(this);
-        this.dao = App.getDaoSession().getAccountDao();
+        dao = App.getDaoSession().getAccountDao();
         setupToolbar();
+//        setupRecyclerView();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         setupRecyclerView();
     }
 }

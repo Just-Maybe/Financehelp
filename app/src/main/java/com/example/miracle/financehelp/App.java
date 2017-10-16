@@ -1,6 +1,7 @@
 package com.example.miracle.financehelp;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 
 import cn.bmob.v3.Bmob;
@@ -18,7 +19,7 @@ import com.iflytek.cloud.SpeechUtility;
 
 public class App extends Application {
     private static DaoSession daoSession;
-
+    private static Context mContext;
     public static DaoSession getDaoSession() {
         return daoSession;
     }
@@ -32,10 +33,14 @@ public class App extends Application {
 
     public void onCreate() {
         super.onCreate();
+        mContext =getApplicationContext();
         daoSession = new DaoMaster(new DaoMaster.DevOpenHelper(getApplicationContext(), "test.db", null).getWritableDatabase()).newSession();
         Bmob.initialize(this, "0fb665dc5321bdbba58e1c78ceaaa5f8");
         SpeechUtility s = SpeechUtility.createUtility(getApplicationContext(), "appid=59b392ef");
         Log.d("111", "onCreate: " + String.valueOf(s == null));
         initGalleryFinal();
+    }
+    public static Context getContext(){
+        return mContext;
     }
 }

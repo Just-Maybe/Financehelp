@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.miracle.financehelp.R;
 import com.example.miracle.financehelp.adapter.FragmentAdapter;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         setupTabLayout();
         setupFloatingBtn();
+
     }
 
     private void setupFloatingBtn() {
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupTabLayout() {
         adapter = new FragmentAdapter(getSupportFragmentManager());
-        tabLayout= (TabLayout) findViewById(R.id.tabLayout);
+        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.addTab(tabLayout.newTab().setText("账本"));
         tabLayout.addTab(tabLayout.newTab().setText("报表"));
         tabLayout.addTab(tabLayout.newTab().setText("我的"));
@@ -67,6 +69,20 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, TableActivity.class);
                 startActivity(intent);
                 break;
+        }
+    }
+
+    private long firstTime = 0;
+
+    @Override
+    public void onBackPressed() {
+        long time = System.currentTimeMillis();
+        if (time - firstTime > 2000) {
+            Toast.makeText(this, "再按一次推出程序", Toast.LENGTH_SHORT).show();
+            firstTime = time;
+        } else {
+            finish();
+            System.exit(0);
         }
     }
 }

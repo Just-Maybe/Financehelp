@@ -1,6 +1,7 @@
 package com.example.miracle.financehelp.entity;
 
 import cn.bmob.v3.BmobObject;
+import cn.bmob.v3.datatype.BmobDate;
 
 public class User extends BmobObject
 {
@@ -10,7 +11,6 @@ public class User extends BmobObject
     private String nickName;
     private String password;
     private String userName;
-
     public String getDatabaseUrl() {
         return databaseUrl;
     }

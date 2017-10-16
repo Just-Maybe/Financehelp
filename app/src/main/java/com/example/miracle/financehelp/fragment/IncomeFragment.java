@@ -65,18 +65,44 @@ public class IncomeFragment extends Fragment {
     private List<IncomeType> mLists = new ArrayList();
     private yyHelper yyHelper;
     private IncomeTypeDao dao;
+    private int flag;
+    private long id;
+    private AccountDao accountDao;
+    private Account account;
+
+    public static IncomeFragment newInstance(int flag, long id) {
+
+        Bundle args = new Bundle();
+        args.putInt("flag", flag);
+        args.putLong("AccountId", id);
+        IncomeFragment fragment = new IncomeFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        flag = getArguments().getInt("flag", 0);
+        id = getArguments().getLong("AccountId", -1);
+        accountDao = App.getDaoSession().getAccountDao();
+
+        Log.d("111", "onCreate: " + flag + "-" + id);
+    }
 
     private void initTypeData() {
-        consumeType.setText("工资");
-        TotalImage.setBackgroundResource(R.drawable.gongzi_x48);
-        Calendar calendar = Calendar.getInstance();
+        if (id == -1) {
+            consumeType.setText("工资");
+            TotalImage.setBackgroundResource(R.drawable.gongzi_x48);
+            Calendar calendar = Calendar.getInstance();
+            final int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            dateTv.setText(year + "-" + (month + 1) + "-" + day);
+            incomeType.setIncometypeName(consumeType.getText().toString());
+            incomeType.setIncomeImage("drawable/gongzi_x48");
+        }
 
-        final int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        dateTv.setText(year + "-" + (month + 1) + "-" + day);
-        incomeType.setIncometypeName(consumeType.getText().toString());
-        incomeType.setIncomeImage("drawable/gongzi_x48");
         mLists.add(new IncomeType("drawable/gongzi_x48", "工资"));
         mLists.add(new IncomeType("drawable/shenghuofei_x48", "生活费"));
         mLists.add(new IncomeType("drawable/hongbao_x48", "红包"));
@@ -143,7 +169,6 @@ public class IncomeFragment extends Fragment {
     }
 
     private void insertIncome() {
-        AccountDao Dao = App.getDaoSession().getAccountDao();
         Account account = new Account();
         account.setCategory(1);
         account.setRemark(remarkEt.getText().toString());
@@ -153,7 +178,7 @@ public class IncomeFragment extends Fragment {
             if (!TextUtils.isEmpty(consumeType.getText().toString())) {
                 account.setIncomeImage(incomeType.getIncomeImage());
                 account.setIncometypeName(incomeType.getIncometypeName());
-                Dao.insert(account);
+                accountDao.insert(account);
                 getActivity().finish();
             }
         } else {
@@ -178,10 +203,36 @@ public class IncomeFragment extends Fragment {
     private void setupInsertBtn() {
         getActivity().findViewById(R.id.insertAccountBtn).setOnClickListener(new View.OnClickListener() {
             public void onClick(View paramAnonymousView) {
-                insertIncome();
+                if (id == -1) {
+                    insertIncome();
+                } else {
+                    updateIncome();
+                }
 
             }
         });
+    }
+
+    /**
+     * 更新收入情况
+     */
+    private void updateIncome() {
+        Account account = new Account();
+        account.setId(id);
+        account.setCategory(1);
+        account.setRemark(" " + remarkEt.getText().toString());
+        account.setTime(getDate());
+        if (!TextUtils.isEmpty(total.getText().toString())) {
+            account.setTotal(Float.parseFloat(total.getText().toString()));
+            if (!TextUtils.isEmpty(consumeType.getText().toString())) {
+                account.setIncomeImage(incomeType.getIncomeImage());
+                account.setIncometypeName(incomeType.getIncometypeName());
+                accountDao.update(account);
+                getActivity().finish();
+            }
+        } else {
+            Snackbar.make(getView(), "还没输入金额", Snackbar.LENGTH_SHORT).show();
+        }
     }
 
     private void setupSpeechRecognizer() {
@@ -248,6 +299,17 @@ public class IncomeFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         dao = App.getDaoSession().getIncomeTypeDao();
+        if (id != -1) {
+            account = accountDao.queryBuilder().where(AccountDao.Properties.Id.eq(id)).unique();
+            consumeType.setText(account.getIncometypeName());
+            total.setText(account.getTotal() + "");
+            int imageResource = getResources().getIdentifier(account.getIncomeImage(), null, App.getContext().getPackageName());
+            TotalImage.setBackgroundResource(imageResource);
+            dateTv.setText(account.getTime().getYear() + "-" + (account.getTime().getMonth() + 1) + "-" + account.getTime().getDate());
+            remarkEt.setText(account.getRemark());
+            incomeType.setIncometypeName(account.getOutcomeTypeName());
+            incomeType.setIncomeImage(account.getOutcomeImage());
+        }
         initTypeData();
         setupInsertBtn();
         setupSpeechRecognizer();

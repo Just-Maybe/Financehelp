@@ -70,18 +70,44 @@ public class OutcomeFragment extends Fragment {
     private List<OutcomeType> mLists = new ArrayList();
     private yyHelper yyHelper;
     private OutcomeTypeDao dao;
+    private int flag;
+    private long id;
+    private AccountDao accountDao;
+    private Account account;
+
+    public static OutcomeFragment newInstance(int flag, long id) {
+
+        Bundle args = new Bundle();
+        args.putInt("flag", flag);
+        args.putLong("AccountId", id);
+        OutcomeFragment fragment = new OutcomeFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        flag = getArguments().getInt("flag", 0);
+        id = getArguments().getLong("AccountId", -1);
+        Log.d("111", "onCreate: flag" + flag);
+        accountDao = App.getDaoSession().getAccountDao();
+        Log.d("111", "onCreate: " + flag + "-" + id);
+    }
 
     private void initTypeData() {
-        consumeType.setText("一般");
-        TotalImage.setBackgroundResource(R.drawable.putong_x48);
-        Calendar calendar = Calendar.getInstance();
 
-        final int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        dateTv.setText(year + "-" + (month + 1) + "-" + day);
-        outcomeType.setOutcomeTypeName(consumeType.getText().toString());
-        outcomeType.setOutcomeImage("drawable/putong_x48");
+        if (id == -1) {
+            consumeType.setText("一般");
+            TotalImage.setBackgroundResource(R.drawable.putong_x48);
+            Calendar calendar = Calendar.getInstance();
+            final int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            dateTv.setText(year + "-" + (month + 1) + "-" + day);
+            outcomeType.setOutcomeTypeName(consumeType.getText().toString());
+            outcomeType.setOutcomeImage("drawable/putong_x48");
+        }
         mLists.add(new OutcomeType("drawable/putong_x48", "一般"));
         mLists.add(new OutcomeType("drawable/canyin_x48", "餐饮"));
         mLists.add(new OutcomeType("drawable/jiaotong_x48", "交通"));
@@ -161,17 +187,17 @@ public class OutcomeFragment extends Fragment {
     }
 
     private void insertOutcome() {
-        AccountDao Dao = App.getDaoSession().getAccountDao();
         Account account = new Account();
         account.setCategory(2);
-        account.setRemark(remarkEt.getText().toString());
+        account.setRemark(" " + remarkEt.getText().toString());
         account.setTime(getDate());
+        account.setPaymentType(paymentTv.getText().toString());
         if (!TextUtils.isEmpty(total.getText().toString())) {
             account.setTotal(Float.parseFloat(total.getText().toString()));
             if (!TextUtils.isEmpty(consumeType.getText().toString())) {
                 account.setOutcomeImage(outcomeType.getOutcomeImage());
                 account.setOutcomeTypeName(outcomeType.getOutcomeTypeName());
-                Dao.insert(account);
+                accountDao.insert(account);
                 getActivity().finish();
             }
         } else {
@@ -196,10 +222,37 @@ public class OutcomeFragment extends Fragment {
     private void setupInsertBtn() {
         getActivity().findViewById(R.id.insertAccountBtn).setOnClickListener(new View.OnClickListener() {
             public void onClick(View paramAnonymousView) {
-                insertOutcome();
+                if (id == -1) {
+                    insertOutcome();
+                } else {
+                    updateOutcome();
+                }
 
             }
         });
+    }
+
+    /**
+     * 更新支出
+     */
+    private void updateOutcome() {
+        Account account = new Account();
+        account.setId(id);
+        account.setCategory(2);
+        account.setRemark(remarkEt.getText().toString());
+        account.setTime(getDate());
+        account.setPaymentType(paymentTv.getText().toString());
+        if (!TextUtils.isEmpty(total.getText().toString())) {
+            account.setTotal(Float.parseFloat(total.getText().toString()));
+            if (!TextUtils.isEmpty(consumeType.getText().toString())) {
+                account.setOutcomeImage(outcomeType.getOutcomeImage());
+                account.setOutcomeTypeName(outcomeType.getOutcomeTypeName());
+                accountDao.update(account);
+                getActivity().finish();
+            }
+        } else {
+            Snackbar.make(getView(), "还没输入金额", Snackbar.LENGTH_SHORT).show();
+        }
     }
 
     private void setupSpeechRecognizer() {
@@ -266,6 +319,18 @@ public class OutcomeFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         dao = App.getDaoSession().getOutcomeTypeDao();
+        if (id != -1) {
+            account = accountDao.queryBuilder().where(AccountDao.Properties.Id.eq(id)).unique();
+            consumeType.setText(account.getOutcomeTypeName());
+            total.setText(account.getTotal() + "");
+            int imageResource = getResources().getIdentifier(account.getOutcomeImage(), null, App.getContext().getPackageName());
+            TotalImage.setBackgroundResource(imageResource);
+            paymentTv.setText(account.getPaymentType());
+            dateTv.setText(account.getTime().getYear() + "-" + (account.getTime().getMonth() + 1) + "-" + account.getTime().getDate());
+            remarkEt.setText(account.getRemark());
+            outcomeType.setOutcomeTypeName(account.getOutcomeTypeName());
+            outcomeType.setOutcomeImage(account.getOutcomeImage());
+        }
         initTypeData();
         setupInsertBtn();
         setupSpeechRecognizer();

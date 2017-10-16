@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="125.0dip"
+    android:layout_height="wrap_content"
     android:layout_marginLeft="10.0dip"
     android:layout_marginRight="10.0dip"
     android:layout_marginTop="20.0dip">
@@ -55,31 +55,43 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
+            android:layout_alignTop="@+id/paymentImg"
             android:layout_marginRight="20.0dip"
             android:text="￥200"
             android:textSize="20.0dip" />
 
         <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:id="@+id/remarkTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/paymentImg"
+            android:layout_marginBottom="7dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/colorSecondText"
+            android:textSize="15dp" />
+
+        <TextView
+            android:layout_below="@+id/remarkTv"
             android:id="@+id/deleteBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
             android:layout_marginBottom="10.0dip"
             android:layout_marginRight="25.0dip"
-            android:layout_toRightOf="@+id/updateBtn"
             android:text="删除"
             android:textColor="@color/colorPrimary"
             android:textSize="17.0dip" />
 
         <TextView
+            android:layout_below="@+id/remarkTv"
             android:id="@+id/updateBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
             android:layout_marginBottom="10.0dip"
-            android:layout_marginRight="20.0dip"
+            android:layout_marginRight="30.0dip"
+            android:layout_toLeftOf="@id/deleteBtn"
             android:text="更新"
             android:textColor="@color/colorPrimary"
             android:textSize="17.0dip" />

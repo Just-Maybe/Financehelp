@@ -27,10 +27,24 @@ public class AccountActivity extends AppCompatActivity {
     @Bind(R.id.insertAccountBtn)
     FloatingActionButton insertAccountBtn;
     private FragmentManager fm;
+    private int flag;
+    private long id;
 
-    private void setupContentLayout() {
+    private void setupContentLayout(int flag) {
         fm = getSupportFragmentManager();
-        fm.beginTransaction().add(R.id.contentLayout, new OutcomeFragment()).commit();
+        switch (flag) {
+            case 1:
+                fm.beginTransaction().add(R.id.contentLayout, new IncomeFragment().newInstance(flag, id)).commit();
+                toolbar.setTitle("收入");
+                break;
+            case 2:
+                fm.beginTransaction().add(R.id.contentLayout, new OutcomeFragment().newInstance(flag, id)).commit();
+                toolbar.setTitle("支出");
+                break;
+            default:
+                fm.beginTransaction().add(R.id.contentLayout, new OutcomeFragment().newInstance(flag, id)).commit();
+                toolbar.setTitle("支出");
+        }
     }
 
     private void setupToolBar() {
@@ -44,11 +58,15 @@ public class AccountActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem MenuItem) {
                 switch (MenuItem.getItemId()) {
                     case R.id.income_menu:
-                        fm.beginTransaction().setCustomAnimations(R.anim.fragment_slide_enter, R.anim.fragment_slide_exit).replace(R.id.contentLayout, new IncomeFragment()).commit();
+                        fm.beginTransaction().setCustomAnimations(R.anim.fragment_slide_enter, R.anim.fragment_slide_exit)
+                                .replace(R.id.contentLayout, new IncomeFragment().newInstance(flag,id))
+                                .commit();
                         toolbar.setTitle("收入");
                         break;
                     case R.id.outcome_menu:
-                        fm.beginTransaction().setCustomAnimations(R.anim.fragment_slide_enter, R.anim.fragment_slide_exit).replace(R.id.contentLayout, new OutcomeFragment()).commit();
+                        fm.beginTransaction().setCustomAnimations(R.anim.fragment_slide_enter, R.anim.fragment_slide_exit)
+                                .replace(R.id.contentLayout, new OutcomeFragment().newInstance(flag,id))
+                                .commit();
                         toolbar.setTitle("支出");
                         break;
                 }
@@ -62,12 +80,18 @@ public class AccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
         ButterKnife.bind(this);
+        flag = getIntent().getIntExtra("flag", 0);
+        id = getIntent().getLongExtra("AccountId", -1);
         setupToolBar();
-        setupContentLayout();
+        setupContentLayout(flag);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.navigation, menu);
-        return true;
+        if (flag == 0) {
+            getMenuInflater().inflate(R.menu.navigation, menu);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

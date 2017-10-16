@@ -11,11 +11,28 @@
         android:orientation="vertical">
 
         <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/pieChartView"
+            android:id="@+id/OutPieChartView"
             android:layout_width="match_parent"
-            android:layout_height="400dp">
+            android:layout_height="400dp"
+            android:layout_marginBottom="50dp" />
 
-        </com.github.mikephil.charting.charts.PieChart>
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/InPieChartView"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_marginBottom="50dp" />
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/OutBarChart"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_marginBottom="50dp"/>
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/InBarChart"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_marginBottom="50dp"/>
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

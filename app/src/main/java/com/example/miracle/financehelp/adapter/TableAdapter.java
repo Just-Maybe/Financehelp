@@ -4,7 +4,9 @@ import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,6 +17,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.miracle.financehelp.App;
 import com.example.miracle.financehelp.R;
+import com.example.miracle.financehelp.activity.AccountActivity;
+import com.example.miracle.financehelp.activity.TableActivity;
 import com.example.miracle.financehelp.entity.Account;
 import com.example.miracle.financehelp.entity.AccountDao;
 
@@ -79,6 +83,7 @@ public class TableAdapter extends RecyclerView.Adapter {
                 ((itemHolder) holder).paymentTv.setText((mList.get(position)).getOutcomeTypeName());
                 imageResource = mContext.getResources().getIdentifier((mList.get(position)).getOutcomeImage(), null, mContext.getPackageName());
             }
+            ((itemHolder) holder).remarkTv.setText(mList.get(position).getRemark());
             Glide.with(mContext).load(imageResource).into(((itemHolder) holder).paymentImg);
             ((itemHolder) holder).totalTv.setText("￥ " + (mList.get(position)).getTotal());
             ((itemHolder) holder).deleteBtn.setOnClickListener(new OnClickListener() {
@@ -108,6 +113,17 @@ public class TableAdapter extends RecyclerView.Adapter {
 
                         }
                     });
+                }
+            });
+            ((itemHolder) holder).updateBtn.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    long id = mList.get(position).getId();
+                    Log.d("111", "onClick: "+id);
+                    Intent intent = new Intent(mContext, AccountActivity.class);
+                    intent.putExtra("AccountId", id);
+                    intent.putExtra("flag",mList.get(position).getCategory());
+                    mContext.startActivity(intent);
                 }
             });
         }
@@ -148,6 +164,8 @@ public class TableAdapter extends RecyclerView.Adapter {
         ImageView paymentImg;
         @Bind(R.id.paymentTv)
         TextView paymentTv;
+        @Bind(R.id.remarkTv)
+        TextView remarkTv;
         @Bind(R.id.timeTv)
         TextView timeTv;
         @Bind(R.id.totalTv)

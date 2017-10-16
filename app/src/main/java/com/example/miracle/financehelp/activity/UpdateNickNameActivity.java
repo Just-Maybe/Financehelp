@@ -52,6 +52,7 @@ public class UpdateNickNameActivity
                     Snackbar.make(UpdateNickNameActivity.this.content, "修改成功", Snackbar.LENGTH_SHORT).show();
                     SPUtils.putString("nickName", UpdateNickNameActivity.this.nickNameEt.getText().toString());
                     UpdateNickNameActivity.this.finish();
+
                     return;
                 }
                 Snackbar.make(UpdateNickNameActivity.this.content, "修改失败", Snackbar.LENGTH_SHORT).show();

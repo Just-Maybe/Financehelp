@@ -2,6 +2,7 @@ package com.example.miracle.financehelp.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,6 +109,7 @@ public class AccountAdapter extends RecyclerView.Adapter {
             }
 
         } else if ((holder instanceof outcomeViewHolder)) {
+//            Log.d("111", "onBindViewHolder: "+mDataList.get(position - 1).getOutcomeImage());
             int imageResource = this.mContext.getResources().getIdentifier((mDataList.get(position - 1)).getOutcomeImage(), null, mContext.getPackageName());
             Glide.with(this.mContext).load(imageResource).into(((outcomeViewHolder) holder).typeImage);
             ((outcomeViewHolder) holder).contentTv.setText((mDataList.get(position - 1)).getOutcomeTypeName() + ":￥" + (mDataList.get(position - 1)).getTotal());
