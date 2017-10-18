@@ -50,11 +50,11 @@ public class JsonParser {
                     JSONObject obj = items.getJSONObject(j);
                     if(obj.getString("w").contains("nomatch"))
                     {
-                        ret.append("没有匹配结果.");
+//                        ret.append("没有匹配结果.");
                         return ret.toString();
                     }
-                    ret.append("【结果】" + obj.getString("w"));
-                    ret.append("【置信度】" + obj.getInt("sc"));
+                    ret.append(obj.getString("w"));
+//                    ret.append(obj.getInt("sc"));
                     ret.append("\n");
                 }
             }

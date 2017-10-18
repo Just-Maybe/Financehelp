@@ -53,7 +53,7 @@
             android:launchMode="singleTask" />
         <activity android:name="com.example.miracle.financehelp.activity.UpdateNickNameActivity" />
         <activity android:name="com.example.miracle.financehelp.activity.UpdatePasswordActivity" />
-
+        <activity android:name=".activity.SearchActivity"/>
 
     </application>
 </manifest>

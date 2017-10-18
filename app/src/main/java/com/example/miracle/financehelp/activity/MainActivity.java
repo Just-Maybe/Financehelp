@@ -2,7 +2,6 @@ package com.example.miracle.financehelp.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -30,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     ViewPager viewPager;
     @Bind(R.id.addAccountBtn)
     FloatingActionButton addAccountBtn;
+    @Bind(R.id.searchBtn)
+    ImageView searchBtn;
     private FragmentAdapter adapter;
 
     protected void onCreate(Bundle paramBundle) {
@@ -62,12 +63,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @OnClick(R.id.tableBtn)
+    @OnClick({R.id.tableBtn,R.id.searchBtn})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tableBtn:
                 Intent intent = new Intent(MainActivity.this, TableActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.searchBtn:
+                Intent searchIntent = new Intent(MainActivity.this,SearchActivity.class);
+                startActivity(searchIntent);
                 break;
         }
     }
@@ -78,11 +83,12 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         long time = System.currentTimeMillis();
         if (time - firstTime > 2000) {
-            Toast.makeText(this, "再按一次推出程序", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
             firstTime = time;
         } else {
             finish();
             System.exit(0);
         }
     }
+
 }

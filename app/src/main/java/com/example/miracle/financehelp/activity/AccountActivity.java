@@ -48,8 +48,8 @@ public class AccountActivity extends AppCompatActivity {
     }
 
     private void setupToolBar() {
-        setSupportActionBar(this.toolbar);
-        this.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             public void onClick(View paramAnonymousView) {
                 AccountActivity.this.finish();
             }

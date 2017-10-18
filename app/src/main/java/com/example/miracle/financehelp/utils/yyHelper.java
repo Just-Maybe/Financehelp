@@ -67,7 +67,7 @@ public class yyHelper {
 
         public void onError(SpeechError error) {
 
-            Toast.makeText(yyHelper.this.mContext, "说话太快了!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(yyHelper.this.mContext, "说话太快了!", Toast.LENGTH_SHORT).show();
         }
 
         public void onEvent(int paramAnonymousInt1, int paramAnonymousInt2, int paramAnonymousInt3, Bundle paramAnonymousBundle) {
@@ -78,11 +78,13 @@ public class yyHelper {
                 Log.d("111", "recognizer result:" + result.getResultString());
                 String text;
                 if ("cloud".equalsIgnoreCase(mEngineType)) {
-                    text = JsonParser.parseGrammarResult(result.getResultString());
-                    listener.onResult(text);
+                    if (result.getResultString() != null&&!isLast) {
+                        text = JsonParser.parseGrammarResult(result.getResultString());
+                        listener.onResult(text);
+                    }
                 }
             }
-            Log.d("111", "recognizer result : null");
+//            Log.d("111", "recognizer result : null");
         }
 
         public void onVolumeChanged(int paramAnonymousInt, byte[] paramAnonymousArrayOfByte) {

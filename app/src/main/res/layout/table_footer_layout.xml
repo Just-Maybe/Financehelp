@@ -9,6 +9,6 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:gravity="center"
-        android:text="你已经记录生活第21天..."
+        android:text="没有更多数据..."
         android:textSize="15.0dip" />
 </RelativeLayout>

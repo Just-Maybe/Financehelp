@@ -40,6 +40,7 @@
                     app:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
                 <ImageView
+                    android:id="@+id/searchBtn"
                     android:layout_width="32.0dip"
                     android:layout_height="32.0dip"
                     android:layout_alignParentRight="true"
